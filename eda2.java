@@ -10,7 +10,7 @@ public class eda2 {
 
 	public static int posicion_vector = 0;
 	public static int inicio = 0;
-	public static int posicion_almacen = inicio;
+	public static int posicion_almacen=0;
 	public static int fin;
 
 	public static void main(String args[]) {
@@ -58,18 +58,32 @@ public class eda2 {
 		ArrayList<Object> almacen_claves = new ArrayList<Object>();
 		ArrayList<int[]> almacen_vector = new ArrayList<int[]>();
 		System.out.print("\nHolaMundo!\n");
-		
-		for (int clave = 0; clave < 5; clave++) {
+	
+		for (int clave = 0; clave < 254; clave++) {
+
+			try{
+			
+			inicio = 0;
+			posicion_almacen = 0;
+			posicion_vector = 0;
 			int[] v_try = new_evil(evil_vector);
 			ofuscar(v_try, clave, vPS, vPI, vPR, 17);
 			add(v_try, clave, almacen_vector, almacen_claves);
+			fin = almacen_vector.size();
+
+
+
+			} catch (Exception e){
+			System.out.println("###############3 EXCEPCION CON LA CLAVE: " + clave);
+			}
 		}
+	
 
 		for (int i = 0; i<almacen_vector.size(); i++){	
 			for (int j = 0; j<almacen_vector.get(i).length; j++){
 				System.out.print(" " + almacen_vector.get(i)[j]);
 			}
-			System.out.print("\n");
+			System.out.print(" -------- Con la clave: " + almacen_claves.get(i) + "\n");
 		}
 
 	}
@@ -119,23 +133,39 @@ public class eda2 {
 
 	public static int search2add(int[] vector2add, ArrayList<int[]> almacen_vector) {
 		if (almacen_vector.get(posicion_almacen)[posicion_vector] < vector2add[posicion_vector]) {
+			
+			System.out.println("El vector que añadimos es mas grande: "+ almacen_vector.get(posicion_almacen)[posicion_vector] + "<" + vector2add[posicion_vector]);
 			posicion_almacen++;
 			inicio = posicion_almacen;
+			System.out.println("inicio: "+ inicio + " Fin: "+ fin);
+
 		} else if (almacen_vector.get(posicion_almacen)[posicion_vector] == vector2add[posicion_vector]) {
-			inicio = posicion_almacen;
 			posicion_vector++;
-			if (posicion_vector == almacen_vector.get(posicion_almacen).length) {
+			if (almacen_vector.get(posicion_almacen)[posicion_vector] > vector2add[posicion_vector]){
 				return posicion_almacen;
+			} else {
+				return (posicion_almacen+1);
 			}
+
 		} else if (almacen_vector.get(posicion_almacen)[posicion_vector] > vector2add[posicion_vector]) {
+			
+			System.out.println("El vector que añadimos es mas pequeño"+ almacen_vector.get(posicion_almacen)[posicion_vector] + ">" + vector2add[posicion_vector]);
 			fin = posicion_almacen;
 			posicion_almacen = inicio;
-			posicion_vector++;
+			System.out.println("inicio: "+ inicio + " Fin: "+ fin);
+			return (posicion_almacen);
 		}
 		if (inicio == fin) {
+
+			System.out.println("inicio: "+ inicio + " Fin: "+ fin);
+			System.out.println("Devolvemos la posicion_almacen");
 			return posicion_almacen;
+
 		} else {
+
+			System.out.println("Volvemos a entra en search2add");
 			return search2add(vector2add, almacen_vector);
+
 		}
 	}
 
