@@ -1,21 +1,10 @@
-import java.time.*;
-import java.io.*;
 import java.util.*;
 
-/**
- * @author alvvela + javhelg
- */
+public class PruebaSort{
 
-public class eda2 {
+    public static void main (String args []){
 
-	public static int posicion_vector = 0;
-	public static int inicio = 0;
-	public static int posicion_almacen=0;
-	public static int fin;
-
-	public static void main(String args[]) {
-
-		int evil_vector[] = { 101, 118, 105, 108, 46, 99, 111, 114, 112, 64, 109, 97, 100, 46, 111, 114, 103 };
+        int evil_vector[] = { 101, 118, 105, 108, 46, 99, 111, 114, 112, 64, 109, 97, 100, 46, 111, 114, 103 };
 		int vPR[] = { 65, 54, 19, 98, 168, 33, 110, 187, 244, 22, 204, 4, 127, 100, 232, 93, 30, 242, 203, 42, 116, 197,
 				94, 53, 210, 149, 71, 158, 150, 45, 154, 136, 76, 125, 132, 63, 219, 172, 49, 182, 72, 95, 246, 196,
 				216, 57, 139, 231, 35, 59, 56, 142, 200, 193, 223, 37, 177, 32, 165, 70, 96, 78, 156, 251, 170, 211, 86,
@@ -54,20 +43,10 @@ public class eda2 {
 				173, 85, 16, 206, 205, 227, 39, 59, 218, 186, 215, 194, 38, 212, 145, 29, 210, 28, 34, 51, 248, 250,
 				241, 90, 239, 207, 144, 182, 139, 181, 189, 192, 191, 8, 151, 30, 108, 226, 97, 224, 198, 193, 89, 171,
 				187, 88, 222, 95, 223, 96, 121, 126, 178, 138 };
-		
-		ArrayList<Object> almacen_claves = new ArrayList<Object>();
-		ArrayList<int[]> almacen_vector = new ArrayList<int[]>();
-		System.out.print("\nHolaMundo!\n");
-	
-
-		int[] v_inicio = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-
-		int[] v_fin = {256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256};
-
-		almacen_claves.add("null");
-		almacen_claves.add("null");
-		almacen_vector.add(v_inicio);
-		almacen_vector.add(v_fin);
+        int [] v1 = {90, 35, 25, 60};
+        int [] v2 = {35, 36, 24, 61};
+        int [] v3 = {70, 38, 28, 58};
+        ArrayList<int[]> almacen = new ArrayList<int[]>();
 
 		for (int clave = 0; clave < 65536; clave++) {
 
@@ -76,11 +55,7 @@ public class eda2 {
 
 			int[] v_try = new_evil(evil_vector);
 			ofuscar(v_try, clave, vPS, vPI, vPR, 17);
-			inicio = 0;
-			posicion_almacen = 0;
-			posicion_vector = 0;
-			fin = (almacen_vector.size()-2);
-			add(v_try, clave, almacen_vector, almacen_claves);
+			addi(v_try, almacen);
 
 
 
@@ -89,17 +64,42 @@ public class eda2 {
 			System.out.println("###############3 EXCEPCION CON LA CLAVE: " + clave);
 			}
 		}
-	
-
-		for (int i = 0; i<(almacen_vector.size() -2); i++){	
-			for (int j = 0; j<almacen_vector.get(i).length; j++){
-				System.out.print(" " + almacen_vector.get(i)[j]);
-			}
-			System.out.print(" -------- Con la clave: " + almacen_claves.get(i) + "\n");
-		}
 		
-			System.out.print(" Size: " + almacen_vector.size() + "\n");
+        for (int i = 0; i < almacen.size() ; i++){
+            for (int j=0; j < almacen.get(i).length ; j++){
+                System.out.print(almacen.get(i)[j] + " ");
+            }
+            System.out.print("\n");
+        }
 
+
+        
+        
+        /*
+        for (int i = 0; i < almacen.length ; i++){
+            for (int j=0; j < almacen[i].length ; j++){
+                System.out.print(almacen[i][j] + " ");
+            }
+            System.out.print("\n");
+        }
+        System.out.print("\n Reordenamos \n");
+
+        sort(2, almacen);
+
+        for (int i = 0; i < almacen.length ; i++){
+            for (int j=0; j < almacen[i].length ; j++){
+                System.out.print(almacen[i][j] + " ");
+            }
+            System.out.print("\n");
+        }
+        */
+
+
+    }
+    public static void addi(int[] vector, ArrayList<int[]> almacen) {
+		almacen.add(vector);
+        int col = 0;
+        sort(col, almacen);
 	}
 
 	public static void ofuscar(int[] vector, int clave, int vPS[], int vPI[], int vPR[], int l_fich) {
@@ -125,7 +125,8 @@ public class eda2 {
 		}
 	}
 
-	public static int[] new_evil(int[] evil_vector) {
+
+    public static int[] new_evil(int[] evil_vector) {
 		int[] vec_evil = new int[evil_vector.length];
 		for (int i = 0; i < evil_vector.length; i++) {
 			vec_evil[i] = evil_vector[i];
@@ -133,36 +134,32 @@ public class eda2 {
 		return vec_evil;
 	}
 
-	public static void add(int[] vector, int clave, ArrayList<int[]> almacen_vector, ArrayList<Object> almacen_claves) {
-		if (almacen_vector.isEmpty()) {
-			System.out.println("almacen_vector esta vacio");
-			almacen_vector.add(vector);
-			almacen_claves.add(clave);
-		} else {
-			int posicion_almacen = search2add(vector, almacen_vector);
-			almacen_vector.add(posicion_almacen, vector);
-			almacen_claves.add(posicion_almacen, clave);
-		}
-	}
+    public static void sort(int col, ArrayList<int[]>almacen) {
+        // Verifico que la columna seleccionada se encuentre dentro del rango permitido
+        // La variable col me indica la columna a ordenar
+        if (col < 0 || col > 17) {
+            return;
+        }
 
-	public static int search2add(int[] vector2add, ArrayList<int[]> almacen_vector) {
+        int aux;
 
-		for (posicion_vector=0; (fin != inicio) ; posicion_almacen++ ) {
+        // Recorro la columna selecciona
+        for (int i = 0; i < almacen.size(); i++) {
+            for (int j = i + 1; j < almacen.size(); j++) {
+                // Verifico si el elemento en la posición [i][col] es mayor que el de la posición [j][col]
+                if (almacen.get(i)[col] > almacen.get(j)[col]) {
+                    // Recorro las filas seleccionadas (i, j) e intercambio los elementos
+                    // Declaro la variable k para controlar la posición (columnas) en la fila
+                    for (int k = 0; k < 17; k++) {
+                        // Intercambio los elementos de las filas seleccionadas columna por columna
+                        aux = almacen.get(i)[k];
+                        almacen.get(i)[k] = almacen.get(j)[k];
+                        almacen.get(j)[k] = aux;
+                    }
+                }
+            }
+        }
+    }
 
-			if (almacen_vector.get(posicion_almacen)[posicion_vector] < vector2add[posicion_vector]){
-				inicio = posicion_almacen;
-			}
-
-			if (almacen_vector.get(posicion_almacen)[posicion_vector] > vector2add[posicion_vector]){
-				fin = posicion_almacen;
-				posicion_almacen = inicio;
-				posicion_vector++;
-			}
-		}
-		if (inicio == fin){
-			return inicio;
-		}
-		return inicio;
-	}
 
 }

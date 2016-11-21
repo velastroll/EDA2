@@ -6,7 +6,7 @@ import java.util.*;
  * @author alvvela + javhelg
  */
 
-public class eda2 {
+public class maldito255_Teleg {
 
 	public static int posicion_vector = 0;
 	public static int inicio = 0;
@@ -59,7 +59,7 @@ public class eda2 {
 		ArrayList<int[]> almacen_vector = new ArrayList<int[]>();
 		System.out.print("\nHolaMundo!\n");
 	
-
+		/*
 		int[] v_inicio = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 		int[] v_fin = {256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256};
@@ -68,6 +68,7 @@ public class eda2 {
 		almacen_claves.add("null");
 		almacen_vector.add(v_inicio);
 		almacen_vector.add(v_fin);
+		*/
 
 		for (int clave = 0; clave < 65536; clave++) {
 
@@ -79,19 +80,19 @@ public class eda2 {
 			inicio = 0;
 			posicion_almacen = 0;
 			posicion_vector = 0;
-			fin = (almacen_vector.size()-2);
+			fin = (almacen_vector.size()-1);
 			add(v_try, clave, almacen_vector, almacen_claves);
 
 
 
 
 			} catch (Exception e){
-			System.out.println("###############3 EXCEPCION CON LA CLAVE: " + clave);
+			System.out.println("############### EXCEPCION CON LA CLAVE: " + clave);
 			}
 		}
 	
 
-		for (int i = 0; i<(almacen_vector.size() -2); i++){	
+		for (int i = 0; i<(almacen_vector.size()-1); i++){	
 			for (int j = 0; j<almacen_vector.get(i).length; j++){
 				System.out.print(" " + almacen_vector.get(i)[j]);
 			}
@@ -147,22 +148,33 @@ public class eda2 {
 
 	public static int search2add(int[] vector2add, ArrayList<int[]> almacen_vector) {
 
-		for (posicion_vector=0; (fin != inicio) ; posicion_almacen++ ) {
+		for (posicion_vector=0; 1==1 ; posicion_almacen++ ) {
+            if (inicio == fin){ return inicio; } 
 
 			if (almacen_vector.get(posicion_almacen)[posicion_vector] < vector2add[posicion_vector]){
-				inicio = posicion_almacen;
-			}
+                if (almacen_vector.size() == (posicion_almacen+1)){ 
+                    return fin; } 
+                else { 
+                    inicio = (posicion_almacen+1);}
 
-			if (almacen_vector.get(posicion_almacen)[posicion_vector] > vector2add[posicion_vector]){
-				fin = posicion_almacen;
-				posicion_almacen = inicio;
-				posicion_vector++;
-			}
+			} else if (almacen_vector.get(posicion_almacen)[posicion_vector] > vector2add[posicion_vector]){
+                if (posicion_almacen==fin){
+                    posicion_almacen = (inicio-1);
+				    posicion_vector++;
+                }
+				fin = (posicion_almacen);
+                if (inicio == fin){ 
+                    return inicio; } 
+                else {
+				    posicion_almacen = (inicio-1);
+				    posicion_vector++;
+                }
+
+			} else if (posicion_almacen == fin){
+                posicion_vector++;
+                posicion_almacen = (inicio-1);
+            }
 		}
-		if (inicio == fin){
-			return inicio;
-		}
-		return inicio;
 	}
 
 }

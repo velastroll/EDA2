@@ -6,7 +6,7 @@ import java.util.*;
  * @author alvvela + javhelg
  */
 
-public class eda2 {
+public class maldito255 {
 
 	public static int posicion_vector = 0;
 	public static int inicio = 0;
@@ -59,7 +59,7 @@ public class eda2 {
 		ArrayList<int[]> almacen_vector = new ArrayList<int[]>();
 		System.out.print("\nHolaMundo!\n");
 	
-
+		/*
 		int[] v_inicio = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 		int[] v_fin = {256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256};
@@ -68,6 +68,7 @@ public class eda2 {
 		almacen_claves.add("null");
 		almacen_vector.add(v_inicio);
 		almacen_vector.add(v_fin);
+		*/
 
 		for (int clave = 0; clave < 65536; clave++) {
 
@@ -79,7 +80,7 @@ public class eda2 {
 			inicio = 0;
 			posicion_almacen = 0;
 			posicion_vector = 0;
-			fin = (almacen_vector.size()-2);
+			fin = (almacen_vector.size());
 			add(v_try, clave, almacen_vector, almacen_claves);
 
 
@@ -91,7 +92,7 @@ public class eda2 {
 		}
 	
 
-		for (int i = 0; i<(almacen_vector.size() -2); i++){	
+		for (int i = 0; i<(almacen_vector.size() ); i++){	
 			for (int j = 0; j<almacen_vector.get(i).length; j++){
 				System.out.print(" " + almacen_vector.get(i)[j]);
 			}
@@ -155,14 +156,13 @@ public class eda2 {
 
 			if (almacen_vector.get(posicion_almacen)[posicion_vector] > vector2add[posicion_vector]){
 				fin = posicion_almacen;
-				posicion_almacen = inicio;
+				posicion_almacen = (inicio);
 				posicion_vector++;
 			}
 		}
 		if (inicio == fin){
-			return inicio;
-		}
-		return inicio;
+				return inicio;
+			}
+		return fin;
 	}
-
 }
