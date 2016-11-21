@@ -1,9 +1,8 @@
 public class PruebaTrie{
-
+	public static int clave_encontrada;
 
    public static void main (String args []){
-
-   int evil_vector[] = {101, 118, 105, 108, 46,99, 111, 114, 112, 64, 109, 97, 100, 46, 111, 114, 103, 00,00};
+		
 		int vPR[] = { 65, 54, 19, 98, 168, 33, 110, 187, 244, 22, 204, 4, 127, 100, 232, 93, 30, 242, 203, 42,
 				116, 197, 94, 53, 210, 149, 71, 158, 150, 45, 154, 136, 76, 125, 132, 63, 219, 172, 49, 182, 72, 95, 246,
 				196, 216, 57, 139, 231, 35, 59, 56, 142, 200, 193, 223, 37, 177, 32, 165, 70, 96, 78, 156, 251, 170, 211,
@@ -43,29 +42,39 @@ public class PruebaTrie{
 				181, 189, 192, 191, 8, 151, 30, 108, 226, 97, 224, 198, 193, 89, 171, 187, 88, 222, 95, 223, 96, 121, 126,
 				178, 138 };
 
-            Trie t = new Trie();
+        Trie t = new Trie();
 
-            int prueba[]={61, 35, 51, 20, 154, 237, 8, 81, 214, 54, 26, 18, 188, 33, 23, 124, 103};
-            int clave = 65535;
-            int longitud_evil = evil_vector.length-2;
-            int texto[];
-            texto = ofuscar(evil_vector, clave, vPS, vPI, vPR, longitud_evil);
-            t.add(texto);
-            System.out.println(t.contiene(prueba));
+		int evil_vector[] = {101, 118, 105, 108, 46,99, 111, 114, 112, 64, 109, 97, 100, 46, 111, 114, 103, 00, 00};
+        int prueba[]={61, 35, 51, 20, 154, 237, 8, 81, 214, 54, 26, 18, 188, 33, 23, 124, 103}; // crypt ==> 65535
 
-            for(int j=0;j<longitud_evil;j++){
-               System.out.print(texto[j]);
-               System.out.print(" ");
-            }
+        int longitud_evil = evil_vector.length-2;
+
+		for (int clave=0; clave<65536; clave++){
+			int[] copy_evil = new_evil(evil_vector);
+			ofuscar(copy_evil, clave, vPS, vPI, vPR, longitud_evil);
+			t.add(copy_evil);
+		}
+
+		if (t.contiene(prueba)){
+			clave_encontrada = t.getClaveEncontrada();
+			System.out.print("\n La clave con la que esta encriptado 'prueba' es: " + clave_encontrada + "\n");
+		}
+	}
 
 
+	public static int[] new_evil(int[] evil_vector) {
+		int[] vec_evil = new int[evil_vector.length];
+		for (int i = 0; i < evil_vector.length; i++) {
+			vec_evil[i] = evil_vector[i];
+		}
+		return vec_evil;
+	}
 
-      }
 
-      public static int[] ofuscar(int[] vector, int clave, int vPS[], int vPI[], int vPR[], int longitud_evil) {
+    public static void ofuscar(int[] vector, int clave, int vPS[], int vPI[], int vPR[], int longitud_evil) {
 		int b;
 		int w0, w1;
-      int clave_copia=clave;
+    	int clave_copia=clave;
 		for (int i = 0; i != longitud_evil - 1; i++) {
 			w0 = clave % 256;
 			w1 = clave / 256;
@@ -80,8 +89,7 @@ public class PruebaTrie{
 			vector[i] = b;
 			clave = (clave + 1) % 65536;
 		}
-      vector [longitud_evil]=256;
-      vector [longitud_evil+1]=clave_copia;
-		return vector;
+      	vector [longitud_evil]=256;
+    	vector [longitud_evil+1]=clave_copia;
 	}
 }
