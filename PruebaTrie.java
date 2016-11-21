@@ -1,3 +1,8 @@
+import java.util.*;
+import java.time.*;
+import java.io.*;
+
+
 public class PruebaTrie{
 	public static int clave_encontrada;
 
@@ -44,6 +49,35 @@ public class PruebaTrie{
 
         Trie t = new Trie();
 
+        
+        String fich = "prueba1.mbx";
+       
+        try{
+        	DataInputStream dis = new DataInputStream(new FileInputStream(fich));
+            int n = (int) fich.length();
+            short[] data = new short[n];
+            byte[] tmp = new byte[n];
+            dis.read(tmp);
+            //System.out.format("Se han leido %d bytes en %.3f seg.!\n", n, 0.001*(System.currentTimeMillis()-tpo));
+            for(int i = 0; i < n; i++) { 
+                data[i] = tmp[i];
+                if(data[i] < 0) { data[i] += 256; }
+            }
+            dis.close();
+
+        }catch(IOException e){
+        	System.out.println("No se encuentra el archivo");
+        }
+        
+        
+        
+        
+        
+
+        
+        
+        
+        
 		int evil_vector[] = {101, 118, 105, 108, 46,99, 111, 114, 112, 64, 109, 97, 100, 46, 111, 114, 103, 00, 00};
         int prueba[]={61, 35, 51, 20, 154, 237, 8, 81, 214, 54, 26, 18, 188, 33, 23, 124, 103}; // crypt ==> 65535
 
