@@ -51,9 +51,11 @@ public class Trie {
 
    public static void main(String[] args) {
         Trie t = new Trie();
-        int evil_vector[] = {101, 118, 105, 108, 46,99, 111, 114, 112, 64, 109, 97, 100, 46, 111, 114, 103,256,65535};
-        int prueba[]={101, 118, 105, 108, 46,99, 111, 114, 112, 64, 109, 97, 100, 46, 111, 114, 103};
+        int evil_vector[] = {101, 118, 105, 108, 46,99, 256,65535};
+        int prueba[]={101, 118, 105, 108, 46,99};
+        int evil2[]={50, 118, 105, 108, 46,99, 1, 114, 112, 64, 109, 97, 100, 46, 111, 114, 103,256,590};
         t.add(evil_vector);
+        t.add(evil2);
         System.out.println(t.contiene(prueba));
    }
 }
