@@ -47,29 +47,36 @@ public class PruebaTrie{
 				181, 189, 192, 191, 8, 151, 30, 108, 226, 97, 224, 198, 193, 89, 171, 187, 88, 222, 95, 223, 96, 121, 126,
 				178, 138 };
 
-        Trie t = new Trie();
+		int evil_vector[] = {101, 118, 105, 108, 46,99, 111, 114, 112, 64, 109, 97, 100, 46, 111, 114, 103,000,000};
+        int longitud_evil = evil_vector.length;
+		Trie t = new Trie();
 
         boolean encontrado = false;
-        String fich = "prueba1.mbx";
-        File fichero_l = new File(fich);
-		int l_fich = (int) fichero_l.length();	
-        int [] vector = new int[l_fich];
+        String nombre_fich = "prueba1.mbx";
+        File fichero_l = new File(nombre_fich);
+		int long_fich = (int) fichero_l.length();	
+        int [] data = new int[long_fich];
         int d=0;
-        
         
         System.out.println("\nAbriendo archivo...\n");
        
-        
-        try (DataInputStream fichero = new DataInputStream(new FileInputStream(fich))) {
+	   /**
+	   * INTENTAMOS ABRIR EL FICHERO
+	   **/
+        try (DataInputStream fichero = new DataInputStream(new FileInputStream(nombre_fich))) {
 			int contador = 0;
-			while (contador != l_fich) {
-				vector[contador] = fichero.readUnsignedByte();
+			while (contador != long_fich) {
+				data[contador] = fichero.readUnsignedByte();
 				contador++;
 			}
 		} catch (IOException e) {
-			System.out.println("No se encuentra el archivo.\nAsegurese que el archivo esta junto al .java");
+			System.out.println("No se encuentra el archivo.\n");
 			System.exit(0);
 		}
+
+		/**
+		* UNA VEZ ABIERTO EL FICHERO, INICIAMOS EL CRONOMETRO.
+		**/
        LocalTime ahora = LocalTime.now();
        System.out.println("Buscando...");
        System.out.println();
@@ -88,10 +95,11 @@ public class PruebaTrie{
         	System.out.println("No se encuentra el archivo");
         }*/
        
-        int evil_vector[] = {101, 118, 105, 108, 46,99, 111, 114, 112, 64, 109, 97, 100, 46, 111, 114, 103,000,000}; //046,099, 111, 114, 112, 64, 109, 97, 100, 46, 111, 114, 103, 00, 00};
-       
-        
-        int longitud_evil = evil_vector.length;
+
+		/**
+		* Ofuscamos el texto que queremos buscar, y le añadimos 256 = (fin del vector buscado) y la clave
+		* con la que hemos ofuscado ese vector.
+		**/
 
 		for (int clave=0; clave<65536; clave++){
 			int[] copy_evil = new_evil(evil_vector);
@@ -101,18 +109,43 @@ public class PruebaTrie{
 			if (clave==86);
 			t.add(copy_evil);
 		}
-        	
-        for (int m=0; m< (vector.length -16) ; m++){
-        	int v[]=new int[17];
-        	for(int p=0;p<17;p++){
-        		v[p]=(int)vector[p+m];
+
+
+
+
+		/**
+		* 1: Sacamos un vector (v) del fichero (data), del tamaño del mensaje buscado.
+		*		-> v1 = [0, ... , 16]
+		* 		-> vn = [(data.length -17), ..., (data.length-1)]
+		*
+		* 2: Probamos si 'v' esta en el trie mediante t.contiene(v).
+		*		-> Si lo contiene, devuelve TRUE.
+		**/	
+        for (int posicion_data=0; posicion_data < (data.length - (longitud_evil - 3)) ; posicion_data++){
+
+        	int v[]=new int[longitud_evil - 2];
+
+        	for(int posicion_vector=0 ; posicion_vector < (longitud_evil-2) ; posicion_vector++){
+        		v[posicion_vector] = (int) data[posicion_vector+posicion_data];
         	}
-        	
-			
-        	
         	if (t.contiene(v) == true){
-        		System.out.println("Encontrado con clave "+t.getClaveEncontrada()+" en la posicion "+m);
+        		System.out.println("\nEncontrado con clave "+t.getClaveEncontrada()+" en la posicion "+posicion_data+"\n");
         		encontrado=true;
+				// AQUi VA EL CODIGO DE OFUSCAR
+				int [] v_mensaje = new int [600];
+				for (int a=0; a<600; a++){
+					if (posicion_data+a-100<0){	v_mensaje [a] = 10;} else{	v_mensaje [a] = data [posicion_data + a - 100]; }
+				}
+				int clave_crypt_mensaje = (t.getClaveEncontrada() - 100) % 65536;
+				while (clave_crypt_mensaje < 0){ clave_crypt_mensaje += 65536;}
+				v_mensaje = ofuscar(v_mensaje, clave_crypt_mensaje, vPS, vPI, vPR, v_mensaje.length);
+				for(int p = 0 ; p<v_mensaje.length ; p++){
+					if (v_mensaje[p]==13 || v_mensaje[p]==10){
+						System.out.println();
+					} else {
+						System.out.print((char) v_mensaje[p]);
+					}
+				}
         	}
         }
         LocalTime despues = LocalTime.now();
