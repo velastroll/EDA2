@@ -49,14 +49,33 @@ public class PruebaTrie{
 
         Trie t = new Trie();
 
-        
+        boolean encontrado = false;
         String fich = "prueba1.mbx";
+        File fichero_l = new File(fich);
+		int l_fich = (int) fichero_l.length();	
+        int [] vector = new int[l_fich];
+        int d=0;
+        
+        
+        System.out.println("\nAbriendo archivo...\n");
        
-        try{
+        
+        try (DataInputStream fichero = new DataInputStream(new FileInputStream(fich))) {
+			int contador = 0;
+			while (contador != l_fich) {
+				vector[contador] = fichero.readUnsignedByte();
+				contador++;
+			}
+		} catch (IOException e) {
+			System.out.println("No se encuentra el archivo.\nAsegurese que el archivo esta junto al .java");
+			System.exit(0);
+		}
+       LocalTime ahora = LocalTime.now();
+       System.out.println("Buscando...");
+       System.out.println();
+       
+       /* try{
         	DataInputStream dis = new DataInputStream(new FileInputStream(fich));
-            int n = (int) fich.length();
-            short[] data = new short[n];
-            byte[] tmp = new byte[n];
             dis.read(tmp);
             //System.out.format("Se han leido %d bytes en %.3f seg.!\n", n, 0.001*(System.currentTimeMillis()-tpo));
             for(int i = 0; i < n; i++) { 
@@ -67,32 +86,61 @@ public class PruebaTrie{
 
         }catch(IOException e){
         	System.out.println("No se encuentra el archivo");
-        }
+        }*/
+       
+        int evil_vector[] = {101, 118, 105, 108, 46,99, 111, 114, 112, 64, 109, 97, 100, 46, 111, 114, 103,000,000}; //046,099, 111, 114, 112, 64, 109, 97, 100, 46, 111, 114, 103, 00, 00};
+       
         
-        
-        
-        
-        
-
-        
-        
-        
-        
-		int evil_vector[] = {101, 118, 105, 108, 46,99, 111, 114, 112, 64, 109, 97, 100, 46, 111, 114, 103, 00, 00};
-        int prueba[]={61, 35, 51, 20, 154, 237, 8, 81, 214, 54, 26, 18, 188, 33, 23, 124, 103}; // crypt ==> 65535
-
-        int longitud_evil = evil_vector.length-2;
+        int longitud_evil = evil_vector.length;
 
 		for (int clave=0; clave<65536; clave++){
 			int[] copy_evil = new_evil(evil_vector);
-			ofuscar(copy_evil, clave, vPS, vPI, vPR, longitud_evil);
+			copy_evil=ofuscar(copy_evil, clave, vPS, vPI, vPR, 19);
+			copy_evil [17]=256;
+	    	copy_evil [18]=clave;
+			if (clave==86);
 			t.add(copy_evil);
 		}
+        	
+        for (int m=0; m< (vector.length -16) ; m++){
+        	int v[]=new int[17];
+        	for(int p=0;p<17;p++){
+        		v[p]=(int)vector[p+m];
+        	}
+        	
+			
+        	
+        	if (t.contiene(v) == true){
+        		System.out.println("Encontrado con clave "+t.getClaveEncontrada()+" en la posicion "+m);
+        		encontrado=true;
+        	}
+        }
+        LocalTime despues = LocalTime.now();
+		int minutos = despues.getMinute() - ahora.getMinute();
+		int segundos = (despues.getSecond() - ahora.getSecond());
+		if ((despues.getSecond() - ahora.getSecond()) < 0) {
+			minutos -= 1;
+			segundos += 60;
+		}
+		if ((despues.getMinute() - ahora.getMinute()) < 0) {
+			minutos += 60;
+		}
+		System.out.println("\nBusqueda finalizada en " + minutos + " minuto(s) y " + segundos + " segundos");
+		if (encontrado == false) {
+			System.out.println("Comprobadas todas las claves, no hay coincidencias");
+		}
+
+        
+        
+        
+        
+        
+      /*
 
 		if (t.contiene(prueba)){
 			clave_encontrada = t.getClaveEncontrada();
 			System.out.print("\n La clave con la que esta encriptado 'prueba' es: " + clave_encontrada + "\n");
-		}
+		}*/
 	}
 
 
@@ -105,11 +153,10 @@ public class PruebaTrie{
 	}
 
 
-    public static void ofuscar(int[] vector, int clave, int vPS[], int vPI[], int vPR[], int longitud_evil) {
+    public static int[] ofuscar(int[] vector, int clave, int vPS[], int vPI[], int vPR[], int longitud_evil) {
 		int b;
 		int w0, w1;
-    	int clave_copia=clave;
-		for (int i = 0; i != longitud_evil - 1; i++) {
+    	for (int i = 0; i != (longitud_evil - 1); i++) {
 			w0 = clave % 256;
 			w1 = clave / 256;
 			b = vector[i];
@@ -123,7 +170,6 @@ public class PruebaTrie{
 			vector[i] = b;
 			clave = (clave + 1) % 65536;
 		}
-      	vector [longitud_evil]=256;
-    	vector [longitud_evil+1]=clave_copia;
+    	return vector;
 	}
 }
