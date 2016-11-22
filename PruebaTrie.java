@@ -2,6 +2,13 @@ import java.util.*;
 import java.time.*;
 import java.io.*;
 
+/**
+*
+*	@author javhelg
+*	@author alvvela
+*	@date 2016-Nov-23
+*
+**/
 
 public class PruebaTrie{
 	public static int clave_encontrada;
@@ -52,7 +59,11 @@ public class PruebaTrie{
 		Trie t = new Trie();
 
         boolean encontrado = false;
-        String nombre_fich = "prueba1.mbx";
+		System.out.print("\nEn que archivo desea buscar la cadena? Inserte nombre y extension: ");
+        String nombre_fich = "";
+		Scanner teclado = new Scanner(System.in);
+		String str = teclado.nextLine();
+		nombre_fich += str; 
         File fichero_l = new File(nombre_fich);
 		int long_fich = (int) fichero_l.length();	
         int [] data = new int[long_fich];
@@ -62,17 +73,21 @@ public class PruebaTrie{
        
 	   /**
 	   * INTENTAMOS ABRIR EL FICHERO
+	   * Iniciamos cronometro de abrir fichero.
 	   **/
+		LocalTime ahora_open = LocalTime.now();
+
         try (DataInputStream fichero = new DataInputStream(new FileInputStream(nombre_fich))) {
 			int contador = 0;
-			while (contador != long_fich) {
-				data[contador] = fichero.readUnsignedByte();
-				contador++;
-			}
-		} catch (IOException e) {
-			System.out.println("No se encuentra el archivo.\n");
-			System.exit(0);
-		}
+			while (contador != long_fich) {	data[contador] = fichero.readUnsignedByte();	contador++;	}
+		} catch (IOException e) {	System.out.println("No se encuentra el archivo.\n");	System.exit(0);	}
+
+		LocalTime despues_open = LocalTime.now();
+		int min_open = despues_open.getMinute() - ahora_open.getMinute();
+		int s_open = (despues_open.getSecond() - ahora_open.getSecond());
+		if ((despues_open.getSecond() - ahora_open.getSecond()) < 0) {	min_open -= 1;	s_open += 60; }
+		if ((despues_open.getMinute() - ahora_open.getMinute()) < 0) {	min_open += 60; }
+
 
 		/**
 		* UNA VEZ ABIERTO EL FICHERO, INICIAMOS EL CRONOMETRO.
@@ -148,6 +163,7 @@ public class PruebaTrie{
 				}
         	}
         }
+
         LocalTime despues = LocalTime.now();
 		int minutos = despues.getMinute() - ahora.getMinute();
 		int segundos = (despues.getSecond() - ahora.getSecond());
@@ -158,6 +174,8 @@ public class PruebaTrie{
 		if ((despues.getMinute() - ahora.getMinute()) < 0) {
 			minutos += 60;
 		}
+		
+		System.out.println("\nHa tardado en abrir y leer el fichero " + min_open + " minuto(s) y " + s_open + " segundos\n");
 		System.out.println("\nBusqueda finalizada en " + minutos + " minuto(s) y " + segundos + " segundos");
 		if (encontrado == false) {
 			System.out.println("Comprobadas todas las claves, no hay coincidencias");
