@@ -68,17 +68,16 @@ public class PruebaTrie {
 		File fichero_l = new File(nombre_fich);
 		int long_fich = (int) fichero_l.length();
 		int[] data = new int[long_fich];
-		//int d = 0;
+
 		int barra = long_fich/50;
 		int barra_inicial = long_fich/50;
-		System.out.println(long_fich);
-		System.out.println(barra);
 
 		System.out.println("\nAbriendo archivo...\n");
 		System.out.println("|0%                                         100%|");
 
 		/**
-		 * INTENTAMOS ABRIR EL FICHERO Iniciamos cronometro de abrir fichero.
+		 * 1 - Iniciamos el cronometro para ver cuanto tarda en abrir el fichero.
+		 * 2 - Intentamos abrir el fichero.
 		 **/
 		LocalTime ahora_open = LocalTime.now();
 
@@ -109,23 +108,12 @@ public class PruebaTrie {
 		}
 
 		/**
-		 * UNA VEZ ABIERTO EL FICHERO, INICIAMOS EL CRONOMETRO.
+		 * Iniciamos el cronometro de busqueda
 		 **/
 		LocalTime ahora = LocalTime.now();
 		System.out.println();
 		System.out.println("Buscando...");
 		System.out.println();
-
-		/*
-		 * try{ DataInputStream dis = new DataInputStream(new
-		 * FileInputStream(fich)); dis.read(tmp); //System.out.format(
-		 * "Se han leido %d bytes en %.3f seg.!\n", n,
-		 * 0.001*(System.currentTimeMillis()-tpo)); for(int i = 0; i < n; i++) {
-		 * data[i] = tmp[i]; if(data[i] < 0) { data[i] += 256; } } dis.close();
-		 * 
-		 * }catch(IOException e){ System.out.println(
-		 * "No se encuentra el archivo"); }
-		 */
 
 		/**
 		 * Ofuscamos el texto que queremos buscar, y le añadimos 256 = (fin del
@@ -143,12 +131,15 @@ public class PruebaTrie {
 		}
 
 		/**
-		 * 1: Sacamos un vector (v) del fichero (data), del tamaño del mensaje
-		 * buscado. -> v1 = [0, ... , 16] -> vn = [(data.length -17), ...,
-		 * (data.length-1)]
 		 *
-		 * 2: Probamos si 'v' esta en el trie mediante t.contiene(v). -> Si lo
-		 * contiene, devuelve TRUE.
+		 * 1: Sacamos un vector (v) del fichero (data), del tamaño del mensaje
+		 * buscado. 
+		 * -> v1 = [0, ... , 16]
+		 * -> vn = [(data.length -17), ... , (data.length-1)]
+		 *
+		 * 2: Probamos si 'v' esta en el trie mediante t.contiene(v). 
+		 * -> Si lo contiene, devuelve TRUE.
+		 *
 		 **/
 		for (int posicion_data = 0; posicion_data < (data.length - (longitud_evil - 3)); posicion_data++) {
 
@@ -161,7 +152,6 @@ public class PruebaTrie {
 				System.out.println(
 						"\nEncontrado con clave " + t.getClaveEncontrada() + " en la posicion " + posicion_data + "\n");
 				encontrado = true;
-				// AQUi VA EL CODIGO DE OFUSCAR
 				int[] v_mensaje = new int[600];
 				for (int a = 0; a < 600; a++) {
 					if (posicion_data + a - 100 < 0) {
@@ -203,13 +193,6 @@ public class PruebaTrie {
 			System.out.println("Comprobadas todas las claves, no hay coincidencias");
 		}
 
-		/*
-		 * 
-		 * if (t.contiene(prueba)){ clave_encontrada = t.getClaveEncontrada();
-		 * System.out.print(
-		 * "\n La clave con la que esta encriptado 'prueba' es: " +
-		 * clave_encontrada + "\n"); }
-		 */
 	}
 
 	public static int[] new_evil(int[] evil_vector) {

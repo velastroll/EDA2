@@ -1,34 +1,39 @@
 import java.util.*;
-
+/**
+ *
+ * @author javhelg
+ * @author alvvela
+ *
+ **/
 public class Trie {
 
     public static int clave_encontrada;
-    HashMap<Integer, HashMap> root;
+    HashMap<Integer, HashMap> raiz;
 
     public Trie() {
-       root = new HashMap<Integer, HashMap>();
+       raiz = new HashMap<Integer, HashMap>();
     }
 
 
-    public void add(int [] s) {
-        HashMap<Integer, HashMap> nodo_actual = root;
-        for (int i = 0, n = s.length; i < n; i++) {
-            Integer c = s[i];
-            if (nodo_actual.containsKey(c))
-                nodo_actual = nodo_actual.get(c);
+    public void add(int [] v) {
+        HashMap<Integer, HashMap> nodo_actual = raiz;
+        for (int i = 0, n = v.length; i < n; i++) {
+            Integer num = v[i];
+            if (nodo_actual.containsKey(num))
+                nodo_actual = nodo_actual.get(num);
             else {
-                nodo_actual.put(c, new HashMap<Integer, HashMap>());
-                nodo_actual = nodo_actual.get(c);
+                nodo_actual.put(num, new HashMap<Integer, HashMap>());
+                nodo_actual = nodo_actual.get(num);
             }
         }
     }
 
-    public boolean contiene(int[] s) {
-        HashMap<Integer, HashMap> nodo_actual = root;
-        for (int i = 0, n = s.length; i < n; i++) {
-            Integer c = s[i];
-            if (nodo_actual.containsKey(c))
-                nodo_actual = nodo_actual.get(c);
+    public boolean contiene(int[] v) {
+        HashMap<Integer, HashMap> nodo_actual = raiz;
+        for (int i = 0, n = v.length; i < n; i++) {
+            Integer num = v[i];
+            if (nodo_actual.containsKey(num))
+                nodo_actual = nodo_actual.get(num);
             else {
                 return false;}
         }
@@ -50,12 +55,5 @@ public class Trie {
     }
 
    public static void main(String[] args) {
-        Trie t = new Trie();
-        int evil_vector[] = {101, 118, 105, 108, 46,99, 256,65535};
-        int prueba[]={101, 118, 105, 108, 46,99};
-        int evil2[]={50, 118, 105, 108, 46,99, 1, 114, 112, 64, 109, 97, 100, 46, 111, 114, 103,256,590};
-        t.add(evil_vector);
-        t.add(evil2);
-        System.out.println(t.contiene(prueba));
    }
 }
