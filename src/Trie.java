@@ -1,8 +1,12 @@
 import java.util.*;
 /**
  *
+ * Trie implementado para la practica de EDA.
+ * 
  * @author javhelg
  * @author alvvela
+ *
+ * @date 2016 November
  *
  **/
 public class Trie {

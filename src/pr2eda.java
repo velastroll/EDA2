@@ -4,13 +4,15 @@ import java.io.*;
 
 /**
  *
+ * Segunda practica de la asignaura de EDA en la UVa.
+ *
  * @author javhelg
  * @author alvvela
- * @date 2016-Nov-23
+ * @date 2016 November
  *
  **/
 
-public class PruebaTrie {
+public class pr2eda {
 	public static int clave_encontrada;
 
 	public static void main(String args[]) {
