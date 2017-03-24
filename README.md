@@ -17,5 +17,5 @@ Para el examen simplemente se nos otorgó un algoritmo que creaba un vector que 
 
 ## Créditos:
 
-- [Álvaro Velasco] (https://github.com/Velastroll)
-- [Javier Helguera] (https://github.com/Helguera)
+- [Álvaro Velasco](https://github.com/Velastroll)
+- [Javier Helguera](https://github.com/Helguera)
